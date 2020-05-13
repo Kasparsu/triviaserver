@@ -17,8 +17,12 @@ wss.on('connection', function connection(ws) {
                 games.message(msg);
             }
         }
-        if(msg.sender === 'player' && msg.id === undefined){
-            games.join(ws, msg);
+        if(msg.sender === 'player'){
+            if(msg.id === undefined){
+                games.join(ws, msg);
+            } else {
+                games.message(msg);
+            }
         }
 
     });

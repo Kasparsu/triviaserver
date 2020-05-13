@@ -34,6 +34,14 @@ module.exports = class GameList {
         return result;
     }
     message(msg){
-        this.find(msg.id).message(msg);
+        if(msg.sender === 'game') {
+            this.find(msg.id).message(msg);
+        }
+        if(msg.sender === 'player') {
+            let players = [];
+            this.games.forEach(game => players.push(...game.players));
+            let player = players.find(player => player.id === msg.id);
+            player[msg.action](msg.data);
+        }
     }
 };
