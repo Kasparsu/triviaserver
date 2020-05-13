@@ -38,6 +38,12 @@ module.exports = class GameList {
             this.find(msg.id).message(msg);
         }
         if(msg.sender === 'player') {
+
+			if (msg.action === 'answer') {
+				let game = this.games.find(game => game.code===msg.data.code);
+       			game.answer(msg);
+			}
+
             let players = [];
             this.games.forEach(game => players.push(...game.players));
             let player = players.find(player => player.id === msg.id);

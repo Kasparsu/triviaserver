@@ -103,5 +103,8 @@ module.exports = class Game {
                 action: 'gameOver'
             }));
         }
-    }
+	}
+	answer(msg){
+		this.ws.send(JSON.stringify({action: 'playerAnswered', data: msg.data}));
+	}
 };
