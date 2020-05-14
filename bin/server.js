@@ -9,7 +9,7 @@ wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
 
         let msg = JSON.parse(message);
-        console.log('received: %s', msg);
+        console.log('received: %s', JSON.stringify(msg));
         if(msg.sender === 'game'){
             if(msg.id === undefined){
                 games.new(ws);
