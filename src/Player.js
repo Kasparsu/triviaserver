@@ -1,9 +1,9 @@
-const helpers = require('./helpers');
+const { v4: uuidv4 } = require('uuid');
 module.exports = class Player {
     constructor(ws, name, game) {
         this.name = name;
         this.ws = ws;
-        this.id = helpers.uuidv4();
+        this.id = uuidv4();
         this.game = game;
         this.score=0;
         ws.send(JSON.stringify({action: 'uid', data: {uid: this.id}}))

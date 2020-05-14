@@ -1,4 +1,4 @@
-const helpers = require('./helpers');
+const { v4: uuidv4 } = require('uuid');
 const Player = require('./Player');
 const axios = require('axios');
 module.exports = class Game {
@@ -6,7 +6,7 @@ module.exports = class Game {
         this.ws = ws;
         this.players = [];
         this.code = code;
-        this.id = helpers.uuidv4();
+        this.id = uuidv4();
         ws.send(JSON.stringify({action: 'uid', data: {uid: this.id}}));
         this.getCode();
         this.questions = [];
