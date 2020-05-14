@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./bin/server.js"
+    "start": "node ./bin/server.js",
+    "fix": "prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -13,5 +14,14 @@
     "axios": "^0.19.2",
     "uuid": "^8.0.0",
     "ws": "^7.2.5"
+  },
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "prettier": "2.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "prettier --check ."
+    }
   }
 }

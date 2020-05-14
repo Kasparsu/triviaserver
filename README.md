@@ -12,4 +12,7 @@ npm install
 
 # Start the server
 npm run start
+
+# Fix formatting issues (prettier)
+npm run fix
 ```
