@@ -10,6 +10,7 @@ module.exports = class Game {
         ws.send(JSON.stringify({action: 'uid', data: {uid: this.id}}));
         this.getCode();
         this.questions = [];
+        this.questionIndex = 0;
     }
 
     message(message) {
