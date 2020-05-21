@@ -7,7 +7,7 @@ module.exports = class Game {
         this.players = [];
         this.code = code;
         this.id = helpers.uuidv4();
-        ws.send(JSON.stringify({action: 'uid', data: {uid: this.id}}));
+        ws.send(JSON.stringify({ action: 'uid', data: { uid: this.id } }));
         this.getCode();
         this.questions = [];
     }
@@ -49,12 +49,14 @@ module.exports = class Game {
 
     }
 
-    sendQuestion(index){
+    sendQuestion(index) {
         this.questionIndex = index;
         this.players.forEach(player => {
-            player.ws.send(JSON.stringify({action: 'start', data: {
+            player.ws.send(JSON.stringify({
+                action: 'start', data: {
                     options: this.shuffleArray([...this.questions[index].incorrect_answers, this.questions[index].correct_answer])
-                }}))
+                }
+            }))
         });
         this.ws.send(JSON.stringify({
             action: 'question', data: {
@@ -71,30 +73,31 @@ module.exports = class Game {
         }
         return array;
     }
-    countdown(){
-        this.timeout = setTimeout(()=>{
+    countdown() {
+        this.timeout = setTimeout(() => {
             clearInterval(this.interval);
             this.showScore();
         }, 31000);
-        this.interval = setInterval(()=> {
+        this.interval = setInterval(() => {
             this.ws.send(JSON.stringify({
                 action: 'timeout'
             }));
             this.players.forEach(player => {
-                player.ws.send(JSON.stringify({action: 'timeout'}));
+                player.ws.send(JSON.stringify({ action: 'timeout' }));
             });
         }, 1000);
     }
-    showScore(){
+    showScore() {
         let score = this.players.map(player => {
-            return {name: player.name, score: player.score};
+            return { name: player.name, score: player.score };
         });
         this.ws.send(JSON.stringify({
             action: 'score', data: {
-                score: score
+                score: score,
+                correctAnswer: this.questions[this.questionIndex].correct_answer
             }
         }));
-        if(this.questionIndex + 1 < this.questions.length) {
+        if (this.questionIndex + 1 < this.questions.length) {
             this.timeout = setTimeout(() => {
                 this.sendQuestion(++this.questionIndex);
             }, 10000);
