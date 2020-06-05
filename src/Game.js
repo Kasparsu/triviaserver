@@ -1,6 +1,10 @@
+
 const helpers = require('./helpers');
 const Player = require('./Player');
 const axios = require('axios');
+
+
+
 module.exports = class Game {
     constructor(ws, code) {
         this.ws = ws;
@@ -10,6 +14,7 @@ module.exports = class Game {
         ws.send(JSON.stringify({action: 'uid', data: {uid: this.id}}));
         this.getCode();
         this.questions = [];
+
     }
 
     message(message) {
@@ -28,14 +33,30 @@ module.exports = class Game {
     }
 
     join(ws, msg) {
-        this.players.push(new Player(ws, msg.data.name, this));
-        this.ws.send(JSON.stringify({
-            action: 'playerJoined', data: {
-                name: msg.data.name
-            }
-        }));
-    }
+        axios.get('https://raw.githubusercontent.com/RobertJGabriel/Google-profanity-words/master/list.txt')
+            .then(res2 => {
+            const filtered = res2.data;
+            
+                if(!filtered.includes(msg.data.name)){
+                    this.players.push(new Player(ws, msg.data.name, this));
+                    this.ws.send(JSON.stringify({
+                        action: 'playerJoined', data: {
+                            name: msg.data.name
+                        }
+            
+                    }
+                    ));
+                    
+                }
+                else
+                {
+                    ws.send(JSON.stringify({action: 'inappropriateName', data: {getRekked: true}}));
+                }
+            })  
 
+
+    }
+    
     start() {
         axios.get('https://opentdb.com/api.php', {
             params: {
