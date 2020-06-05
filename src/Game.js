@@ -14,7 +14,14 @@ module.exports = class Game {
 
     message(message) {
         this.message = message;
-        this[message.action]();
+        this[message.action](message.category);
+    }
+
+    getCategories(){
+        axios.get('https://opentdb.com/api_category.php', {})
+            .then(res => {
+                this.ws.send(JSON.stringify({action: 'categories', data: res.data}))
+        });
     }
 
     getCode() {
@@ -24,6 +31,7 @@ module.exports = class Game {
                 code: this.code
             }
         }));
+        this.getCategories()
 
     }
 
@@ -36,11 +44,12 @@ module.exports = class Game {
         }));
     }
 
-    start() {
+    start(category = 9) {
         axios.get('https://opentdb.com/api.php', {
             params: {
                 amount: 5,
-                type: 'multiple'
+                type: 'multiple',
+                category: category
             }
         }).then(res => {
             this.questions = res.data.results;

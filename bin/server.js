@@ -12,7 +12,7 @@ wss.on('connection', function connection(ws) {
         console.log('received: %s', msg);
         if(msg.sender === 'game'){
             if(msg.id === undefined){
-                games.new(ws);
+                games.new(ws, msg.category);
             } else {
                 games.message(msg);
             }
